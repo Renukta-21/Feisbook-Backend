@@ -1,9 +1,10 @@
 const express = require('express')
+const PORT = 3001
 
 const app = express()
 
-app.get('/api', (req,res)=>{
-    console.log('asasa')
-    res.send('ok lets go')
+app.get('/api', (req, res) => {
+    res.send('API')
 })
-app.listen(3001, () => console.log('bieeeen'))
+
+app.listen(PORT, () => console.log(`Server running on ${PORT}`))
