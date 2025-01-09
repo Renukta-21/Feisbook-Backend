@@ -1,14 +1,14 @@
 const express = require('express')
 const authRouter = require('./controllers/auth')
 const { default: mongoose } = require('mongoose')
-
-const CONNECTION_STRING = 'mongodb://localhost:27017'
+require('dotenv').config()
 
 const app = express()
 
-mongoose.connect(CONNECTION_STRING)
-.then(()=> console.log('Joya'))
-.catch(err=> console.log(err))
+
+mongoose.connect(process.env.MONGO_URI_TEST)
+.then(()=> console.log(`DB connected on `))
+.catch(err=> console.log('Error connecting to DB '+ err))
 
 app.use(authRouter)
 
