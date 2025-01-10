@@ -1,6 +1,9 @@
 const errorHandler = (err, req, res, next)=>{
-    console.log('Error senioooor '+ err)
-    res.status(409).send('SUPUTAMADRE ABUELA')
+    console.log('Error --------------------------------')
+    if(err.code = 11000){
+        const [[, value]] = Object.entries(err.keyValue)
+        res.status(409).send({error:`${value} has an existing account`})
+    }
 }
 
 module.exports = {
