@@ -2,6 +2,7 @@ const express = require('express')
 const authRouter = require('./controllers/auth')
 const { default: mongoose } = require('mongoose')
 const config = require('./config')
+const middleware = require('./utils/middleware')
 
 const app = express()
 
@@ -12,5 +13,6 @@ mongoose.connect(config.mongoURI)
 
 app.use(express.json())
 app.use(authRouter)
+app.use(middleware.errorHandler)
 
 module.exports = app

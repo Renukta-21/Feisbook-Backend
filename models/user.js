@@ -1,17 +1,16 @@
-const { default: mongoose, model, Mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
         trim:true
-    },
-    email:{
+    }, email:{
         type:String,
         required:true,
         unique:true
     },
-    passwordHash:{
+    password:{
         required:true,
         type:String
     },
