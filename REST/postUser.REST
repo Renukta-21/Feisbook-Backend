@@ -2,7 +2,7 @@ POST http://localhost:3001/api/auth/signup
 Content-Type: application/json
 
 {
-    "name":"Anibru Martinez",
+    
     "email":"eduz211004@gmail.com",
     "password":"Daniel211004",
     "bio":"Never expect something better, better things always brings sadder moods"
