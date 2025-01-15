@@ -1,4 +1,5 @@
 const { describe, test, after, beforeEach } = require('node:test')
+const assert =  require('node:assert')
 const supertest = require("supertest");
 const app = require('../app');
 const mongoose = require('mongoose');
@@ -17,27 +18,27 @@ const validationTests = [
             "password": "Daniel211004",
             "bio": "Never expect something better, better things always brings sadder moods"
         },
-        missingField:'username'
+        missingField:'name'
     },
     {
         data: {
-            "username":"Anibru Martinez",
+            "name":"Anibru Martinez",
             "password": "Daniel211004",
             "bio": "Never expect something better, better things always brings sadder moods"
         },
         missingField:'email'
     }
 ]
+
 describe('Sign up', () => {
     test('Fails if property is missing', async () => {
-        const response = await api.post('/api/auth/signup')
-            .send({
-                "email": "eduz211004@gmail.com",
-                "password": "Daniel211004",
-                "bio": "Never expect something better, better things always brings sadder moods"
-            })
+        for(const {data, missingField, expectedMessage} of validationTests){
+            const response = await api.post('/api/auth/signup')
+            .send(data)
             .expect(400)
-        console.log(response.body)
+            console.log(response.body)
+            assert.ok(response.body.error.includes(`User validation failed: ${missingField}: Path \`${missingField}\` is required.`))
+        }
     })
 })
 
