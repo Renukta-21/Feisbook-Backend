@@ -40,8 +40,17 @@ describe('Sign up', () => {
             assert.ok(response.body.error.includes(`User validation failed: ${missingField}: Path \`${missingField}\` is required.`))
         }
     })
+    test('Password does not meet the minimun length or missing', async()=>{
+        const response = await api.post('/api/auth/signup')
+        .send({
+            "name":"Anibru Martinez",
+            "email":"eduz211004@gmail.com",
+            "password": "Daniel"
+        })
+        .expect(400)
+    })
 })
 
-after(async () => {
-    await mongoose.connection.close()
+after(() => {
+     mongoose.connection.close()
 })

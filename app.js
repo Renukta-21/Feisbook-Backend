@@ -6,7 +6,6 @@ const middleware = require('./utils/middleware')
 
 const app = express()
 
-
 mongoose.connect(config.mongoURI)
 .then(()=> console.log(`DB connected on ${config.mongoURI}`))
 .catch(err=> console.log('Error connecting to DB '+ err))

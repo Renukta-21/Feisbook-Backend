@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "node --test",
-    "dev": "nodemon index.js"
+    "test": "cross-env NODE_ENV=test node --test",
+    "dev": "cross-env NODE_ENV=development nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +18,8 @@
     "mongoose": "^8.9.3"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
+    "crossenv": "^0.0.2-security",
     "nodemon": "^3.1.9",
     "supertest": "^7.0.0"
   }
