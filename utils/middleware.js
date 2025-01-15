@@ -9,7 +9,7 @@ const errorHandler = (err, req, res, next)=>{
         res.status(400).send({error:err.message})
     }else{
         if(process.env.NODE_ENV !== 'test'){
-            console.log('Nuevo errror xdd '+ err.name)
+            console.log('Nuevo errror xdd '+ err)
         }
     }
 }

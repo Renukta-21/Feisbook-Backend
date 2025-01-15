@@ -2,8 +2,9 @@ const User = require('../models/user')
 const authRouter = require('express').Router()
 require('express-async-errors')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
-authRouter.post('/api/auth/signup', async (req, res) => {
+authRouter.post('/signup', async (req, res) => {
     const { name, email, password, bio } = req.body
     if (!password || password.length < 8) {
         res.status(400).send({
@@ -17,6 +18,24 @@ authRouter.post('/api/auth/signup', async (req, res) => {
     res.status(201).send('User created succesfully')
 })
 
-authRouter.post('/api/auth/login')
+authRouter.post('/login', async(req,res)=>{
+    const {password, name, email} = req.body
+    
+    if(!email || !password){
+        res.status(400).send({error:'email or password not provided'})
+    }
+
+    const user = await User.findOne({email})
+    if(!user) res.status(404).send({error:'user not found'}) 
+    
+    const validPassword = bcrypt.compare(password, user.passwordHash)
+    if(!validPassword) res.status(401).send({error:'Incorrect password'})
+    
+    const token = jwt.sign({
+        user:user._id
+    }, process.env.JWT_SECRET_KEY)
+
+    res.status(200).send({token})
+})
 
 module.exports = authRouter

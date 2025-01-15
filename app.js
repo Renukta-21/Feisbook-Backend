@@ -11,7 +11,7 @@ mongoose.connect(config.mongoURI)
 .catch(err=> console.log('Error connecting to DB '+ err))
 
 app.use(express.json())
-app.use(authRouter)
+app.use('/api/auth/', authRouter)
 app.use(middleware.errorHandler)
 
 module.exports = app
