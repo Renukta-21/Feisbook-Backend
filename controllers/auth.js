@@ -15,7 +15,7 @@ authRouter.post('/signup', async (req, res) => {
     const passwordHash = await bcrypt.hash(password, 10)
     const newUser = new User({ name, email, passwordHash, bio })
     await newUser.save()
-    res.status(201).send('User created succesfully')
+    res.status(201).send({message: 'User created succesfully'})
 })
 
 authRouter.post('/login', async(req,res)=>{
