@@ -38,4 +38,7 @@ authRouter.post('/login', async(req,res)=>{
     res.status(200).send({token})
 })
 
+authRouter.post('/logout/', async(req,res)=>{
+    res.status(404).send({error:'Route not defined'})
+})
 module.exports = authRouter
