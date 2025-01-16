@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const authRouter = require('./controllers/auth')
 const userRouter = require('./controllers/users')
 const { default: mongoose } = require('mongoose')
@@ -11,6 +12,7 @@ mongoose.connect(config.mongoURI)
 .then(()=> console.log(`DB connected on ${config.mongoURI}`))
 .catch(err=> console.log('Error connecting to DB '+ err))
 
+app.use(cors())
 app.use(express.json())
 app.use('/api/auth/', authRouter)
 app.use('/api/users/', userRouter)
