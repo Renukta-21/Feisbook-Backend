@@ -10,7 +10,7 @@ const apiURL = '/api/auth/login'
 
 beforeEach(async () => {
     await User.deleteMany({})
-    
+
 })
 const account = {
     "name": "Anibru Martinez",
@@ -20,22 +20,33 @@ const account = {
 }
 
 const nonExistingAccount = {
-    "name": "Anibru Martinez",
-    "email":"eduz211004@gmail.com",
-    "password": "Daniel211004",
-    "bio": "Never expect something better, better things always brings sadder moods"
+    "email": "eduz211004@gmail.com",
+    "password": "Daniel211004"
 }
 
-describe('Login', ()=>{
-    test('Account does not exist', async()=>{
+describe('Login', () => {
+    test('Account does not exist', async () => {
         const response = await api.post(apiURL)
-        .send(nonExistingAccount)
-        .expect(404)
+            .send(nonExistingAccount)
+            .expect(404)
 
         assert.ok(response.body.error.includes('user not found'))
     })
+
+    test('Successful', async () => {
+        await api.post('/api/auth/signup')
+            .send(account)
+            .expect(201)
+        const response = await api.post(apiURL)
+            .send({
+                "email": "eduz2111004@gmail.com",
+                "password": "Daniel211004",
+            })
+            .expect(200)
+
+    })
 })
 
-after(async()=>{
+after(async () => {
     await mongoose.connection.close()
 })
