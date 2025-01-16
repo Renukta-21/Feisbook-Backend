@@ -43,6 +43,7 @@ describe('Login', () => {
                 "password": "Daniel211004",
             })
             .expect(200)
+        assert.ok('token' in response.body)
 
     })
 })
