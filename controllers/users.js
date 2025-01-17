@@ -1,23 +1,25 @@
 const User = require('../models/user')
 const usersRouter = require('express').Router()
-const jwt = require('jsonwebtoken')
 
-usersRouter.get('/me', async(req,res)=>{
+usersRouter.get('/me', async(req,res, next)=>{
     const {email} = req.body
     
     const authorizationHeader = req.get('Authorization')
     if(authorizationHeader && authorizationHeader.startsWith('Bearer')){
         const token = authorizationHeader.split(' ')[1]
+        if(!token) res.status(400).send({error:'Token not provided'})
+
         try {
-            
+            const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
+            console.log(decodedToken)
         } catch (error) {
-            console.log(error)
+            next(error)
         }
 
     }else{
         res.status(400).send({error:'Authorization header missing or malformed'})
     }
-    console.log(req.headers)
+    
     const user = await User.findOne({email})
     
 
