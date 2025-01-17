@@ -22,7 +22,7 @@ beforeEach(async()=>{
     test('Retrieving one user', async()=>{
         await api.post(`/api/auth/signup`).send(account).expect(201)
         const loginResponse = await api.post(`/api/auth/login`).send(account).expect(200)
-        const response = await api.get(`${apiURL}/me`).set('Authorization', `Bearer ${loginResponse.token}`)
+        const response = await api.get(`${apiURL}/me`).set('Authorization', `Bearer ${loginResponse.body.token}`)
         console.log(response.body)
         
     })
