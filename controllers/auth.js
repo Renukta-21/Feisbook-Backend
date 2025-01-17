@@ -9,7 +9,7 @@ authRouter.post('/signup', async (req, res) => {
     if (!password || password.length < 8) {
         return res.status(400).send({
             error: 'Password length must be at least 8 chars'
-        }) // return after sending the response
+        }) 
     }
 
     const passwordHash = await bcrypt.hash(password, 10)

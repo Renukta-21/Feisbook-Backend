@@ -30,7 +30,7 @@ describe('Login', () => {
             .send(nonExistingAccount)
             .expect(404)
 
-        assert.ok(response.body.error.includes('user not found'))
+        assert.ok(response.body.error.includes('User not found'))
     })
 
     test('Successful', async () => {
