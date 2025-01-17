@@ -7,38 +7,43 @@ const jwt = require('jsonwebtoken')
 authRouter.post('/signup', async (req, res) => {
     const { name, email, password, bio } = req.body
     if (!password || password.length < 8) {
-        res.status(400).send({
-            error: 'Password length must me at least 8 chars'
-        })
+        return res.status(400).send({
+            error: 'Password length must be at least 8 chars'
+        }) // return after sending the response
     }
 
     const passwordHash = await bcrypt.hash(password, 10)
     const newUser = new User({ name, email, passwordHash, bio })
     await newUser.save()
-    res.status(201).send({message: 'User created succesfully'})
+    res.status(201).send({message: 'User created successfully'})
 })
 
-authRouter.post('/login', async(req,res)=>{
-    const {password, name, email} = req.body
-    
-    if(!email || !password){
-        res.status(400).send({error:'email or password not provided'})
+authRouter.post('/login', async(req,res) => {
+    const { password, name, email } = req.body
+
+    if (!email || !password) {
+        return res.status(400).send({ error: 'Email or password not provided' }) 
     }
 
-    const user = await User.findOne({email})
-    if(!user) res.status(404).send({error:'user not found'}) 
-    
-    const validPassword = bcrypt.compare(password, user.passwordHash)
-    if(!validPassword) res.status(401).send({error:'Incorrect password'})
-    
+    const user = await User.findOne({ email })
+    if (!user) {
+        return res.status(404).send({ error: 'User not found' }) 
+    }
+
+    const validPassword = await bcrypt.compare(password, user.passwordHash) 
+    if (!validPassword) {
+        return res.status(401).send({ error: 'Incorrect password' }) 
+    }
+
     const token = jwt.sign({
-        userID:user._id
+        userID: user._id
     }, process.env.JWT_SECRET_KEY)
 
-    res.status(200).send({token})
+    res.status(200).send({ token })
 })
 
-authRouter.post('/logout/', async(req,res)=>{
-    res.status(404).send({error:'Route not defined'})
+authRouter.post('/logout/', async (req, res) => {
+    res.status(404).send({ error: 'Route not defined' })
 })
+
 module.exports = authRouter

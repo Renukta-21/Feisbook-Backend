@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "tests":"cross-env  node runTests.js ",
     "test": "cross-env NODE_ENV=test node --test",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "start": "node index.js"
