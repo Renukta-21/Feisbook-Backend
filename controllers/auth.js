@@ -32,7 +32,7 @@ authRouter.post('/login', async(req,res)=>{
     if(!validPassword) res.status(401).send({error:'Incorrect password'})
     
     const token = jwt.sign({
-        user:user._id
+        userID:user._id
     }, process.env.JWT_SECRET_KEY)
 
     res.status(200).send({token})

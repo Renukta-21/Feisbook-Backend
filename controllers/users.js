@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const usersRouter = require('express').Router()
+const jwt = require('jsonwebtoken')
 
 usersRouter.get('/me', async(req,res, next)=>{
     const {email} = req.body
@@ -11,7 +12,12 @@ usersRouter.get('/me', async(req,res, next)=>{
 
         try {
             const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
-            console.log(decodedToken)
+            const userID = decodedToken.userID
+
+            const user = await User.findById(userID)
+            if(!user) res.status(404).send({error:'User not found'})
+
+            req.user = user
         } catch (error) {
             next(error)
         }
