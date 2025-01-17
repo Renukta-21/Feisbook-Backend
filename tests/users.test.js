@@ -3,6 +3,7 @@ const supertest = require('supertest')
 const app = require('../app')
 const { default: mongoose } = require('mongoose')
 const User = require('../models/user')
+const assert = require('node:assert')
  const api = supertest(app)
 
  const apiURL = '/api/users'
@@ -23,8 +24,8 @@ beforeEach(async()=>{
         await api.post(`/api/auth/signup`).send(account).expect(201)
         const loginResponse = await api.post(`/api/auth/login`).send(account).expect(200)
         const response = await api.get(`${apiURL}/me`).set('Authorization', `Bearer ${loginResponse.body.token}`)
-        console.log(response.body)
-        
+        .expect(200)
+        assert.ok(response.body.name)
     })
  })
 
