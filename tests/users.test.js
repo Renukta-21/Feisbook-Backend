@@ -31,9 +31,11 @@ beforeEach(async () => {
     await User.deleteMany({})
 })
 
+let id 
 const insertUsers = async () => {
     for (const account of accounts) {
-        await api.post('/api/auth/signup').send(account).expect(201)
+        const response = await api.post('/api/auth/signup').send(account).expect(201)
+        id = response.body._id
     }
 }
 describe('Users', () => {
@@ -45,11 +47,12 @@ describe('Users', () => {
         assert.ok(response.body.name)
     })
 
-    test('Retrieving all users', async () => {
+    test('Retrieving specific user', async () => {
         await insertUsers()
-        const response = await api.get(apiURL)
+        const response = await api.get(`${apiURL}/${id}`)
             .expect(200)
-        console.log(response.body)
+        
+        
     })
 })
 

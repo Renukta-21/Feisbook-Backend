@@ -27,9 +27,10 @@ usersRouter.get('/me', async(req,res, next)=>{
         res.status(400).send({error:'Authorization header missing or malformed'})
     }
 })
-usersRouter.get('/', async(req,res)=>{
-    const users = await User.find({})
-    res.status(200).send(users)
+usersRouter.get('/:id', async(req,res)=>{
+    const {id} = req.params
+    const users = await User.findById(id)
+    res.status(200).send(id)
 })
 usersRouter.get('/:id', async(req,res)=>{
     const {email} = req.body
