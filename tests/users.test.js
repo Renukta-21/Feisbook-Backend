@@ -59,6 +59,7 @@ describe('Users', () => {
         await User.findByIdAndDelete(id[0])
         const response = await api.get(`${apiURL}/${id[0]}`)
             .expect(404)
+        assert.ok(response.body.error)
     })
 })
 

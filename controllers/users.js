@@ -17,8 +17,8 @@ usersRouter.get('/me', async(req,res, next)=>{
             const user = await User.findById(userID)
             if(!user) return res.status(404).send({error:'User not found'})
 
-            /* req.user = user */
-            res.status(200).send(user)
+            req.user = user
+            res.status(200).send(req.user)
         } catch (error) {
             next(error)
         }
