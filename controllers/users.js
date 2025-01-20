@@ -15,10 +15,10 @@ usersRouter.get('/me', async(req,res, next)=>{
             const userID = decodedToken.userID
 
             const user = await User.findById(userID)
-            if(!user) res.status(404).send({error:'User not found'})
+            if(!user) return res.status(404).send({error:'User not found'})
 
-            req.user = user
-            res.status(200).send(req.user)
+            /* req.user = user */
+            res.status(200).send(user)
         } catch (error) {
             next(error)
         }
@@ -29,14 +29,10 @@ usersRouter.get('/me', async(req,res, next)=>{
 })
 usersRouter.get('/:id', async(req,res)=>{
     const {id} = req.params
-    const users = await User.findById(id)
-    res.status(200).send(id)
-})
-usersRouter.get('/:id', async(req,res)=>{
-    const {email} = req.body
-    const user = await User.find({email})
-    
-    res.status(200).send({user})
+    const user = await User.findById(id)
+    if(!user) return res.status(404).send({error:'User not found'})
+        
+    res.status(200).send(user)
 })
 
 module.exports = usersRouter

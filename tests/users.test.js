@@ -31,11 +31,11 @@ beforeEach(async () => {
     await User.deleteMany({})
 })
 
-let id 
+let id = []
 const insertUsers = async () => {
     for (const account of accounts) {
         const response = await api.post('/api/auth/signup').send(account).expect(201)
-        id = response.body._id
+        id.push(response.body._id)
     }
 }
 describe('Users', () => {
@@ -44,15 +44,21 @@ describe('Users', () => {
         const loginResponse = await api.post(`/api/auth/login`).send(account).expect(200)
         const response = await api.get(`${apiURL}/me`).set('Authorization', `Bearer ${loginResponse.body.token}`)
             .expect(200)
-        assert.ok(response.body.name)
+        assert.strictEqual(response.body.name, account.name)
     })
 
     test('Retrieving specific user', async () => {
         await insertUsers()
-        const response = await api.get(`${apiURL}/${id}`)
+        const response = await api.get(`${apiURL}/${id[1]}`)
             .expect(200)
+        assert.ok(response.body._id)
         
-        
+    })
+
+    test('Retrieving non existing user', async()=>{
+        await User.findByIdAndDelete(id[0])
+        const response = await api.get(`${apiURL}/${id[0]}`)
+            .expect(404)
     })
 })
 
