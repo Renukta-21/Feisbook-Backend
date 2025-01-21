@@ -8,6 +8,7 @@ const api = supertest(app)
 
 const apiURL = '/api/users'
 const newUserURL = '/api/auth/signup'
+const loginURL = '/api/auth/login'
 
 const account = {
     "name": "Anibru Martinez",
@@ -71,8 +72,14 @@ describe('Users', () => {
 
     test('Updating specific user', async () => {
         const signupResponse = await api.post(newUserURL).send(account).expect(201)
-        const response = await api.put(`${apiURL}/${signupResponse.body._id}`).send(accountUpdatedFields).expect(200)
-        console.log(response.body)
+        const loginResponse = await api.post(loginURL).send(account).expect(200)
+        const response = await api.put(`${apiURL}/${signupResponse.body._id}`).set('Authorization', `Bearer ${loginResponse.body.token}`).send(accountUpdatedFields).expect(200)
+
+        assert.strictEqual(response.body.name, accountUpdatedFields.name, 'Name should be updated');
+        assert.strictEqual(response.body.bio, accountUpdatedFields.bio, 'Bio should be updated');
+
+        assert.strictEqual(account.email, response.body.email, 'Email should not be updated');
+        assert.strictEqual(response.body._id, signupResponse.body._id, 'ID should not change');
     })
 })
 

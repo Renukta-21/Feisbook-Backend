@@ -14,9 +14,10 @@ usersRouter.get('/:id', async(req,res)=>{
     res.status(200).send(user)
 })
 
-usersRouter.put('/:id', async(req,res)=>{
+usersRouter.put('/:id', middleware.tokenExtractor, async(req,res)=>{
     const {id} = req.params
-    const updatedUser = await User.findByIdAndUpdate(id, req.body, {
+    const {email, ...allowedUpdates} =req.body
+    const updatedUser = await User.findByIdAndUpdate(id, allowedUpdates, {
         new:true,
         runValidators:true
     })
