@@ -71,7 +71,8 @@ describe('Users', () => {
 
     test('Updating specific user', async () => {
         const signupResponse = await api.post(newUserURL).send(account).expect(201)
-        const response = await api.put(`${apiURL}/${signupResponse.body._id}`).send()
+        const response = await api.put(`${apiURL}/${signupResponse.body._id}`).send(accountUpdatedFields).expect(200)
+        console.log(response.body)
     })
 })
 

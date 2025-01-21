@@ -16,6 +16,11 @@ usersRouter.get('/:id', async(req,res)=>{
 
 usersRouter.put('/:id', async(req,res)=>{
     const {id} = req.params
-    console.log(id)
+    const updatedUser = await User.findByIdAndUpdate(id, req.body, {
+        new:true,
+        runValidators:true
+    })
+
+    res.status(200).send(updatedUser)
 })
 module.exports = usersRouter
