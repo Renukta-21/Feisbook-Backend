@@ -5,6 +5,7 @@ const userRouter = require('./controllers/users')
 const { default: mongoose } = require('mongoose')
 const config = require('./config')
 const middleware = require('./utils/middleware')
+const docRouter = require('./controllers/docs')
 
 const app = express()
 
@@ -14,6 +15,7 @@ mongoose.connect(config.mongoURI)
 
 app.use(cors())
 app.use(express.json())
+app.use('/api/', docRouter)
 app.use('/api/auth/', authRouter)
 app.use('/api/users/', userRouter)
 app.use(middleware.errorHandler)
