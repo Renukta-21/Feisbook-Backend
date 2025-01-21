@@ -1,3 +1,31 @@
+const jwt = require('jsonwebtoken')
+const User = require('../models/user')
+
+const tokenExtractor = async(req,res,next) => {
+    const authorizationHeader = req.get('Authorization')
+    if(authorizationHeader && authorizationHeader.startsWith('Bearer')){
+        const token = authorizationHeader.split(' ')[1]
+        if(!token) return res.status(400).send({error:'Token not provided'})
+
+        try {
+            const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
+            const userID = decodedToken.userID
+
+            const user = await User.findById(userID)
+            if(!user) return res.status(404).send({error:'User not found'})
+
+            req.user = user
+            next()
+        } catch (error) {
+            next(error)
+        }
+
+    }else{
+        res.status(400).send({error:'Authorization header missing or malformed'})
+    }
+    
+}
+
 const errorHandler = (err, req, res, next) => {
     if (process.env.NODE_ENV !== 'tests' && process.env.NODE_ENV !== 'test') {
         console.log('Error --------------------------------');
@@ -14,11 +42,11 @@ const errorHandler = (err, req, res, next) => {
         res.status(400).send({error:'Invalid ID format'})
     }
     else {
-        console.log('Nuevo errror xdd ' + err)
+        console.log('Nuevo errror ' + err)
     }
 
 }
 
 module.exports = {
-    errorHandler
+    errorHandler, tokenExtractor
 }
