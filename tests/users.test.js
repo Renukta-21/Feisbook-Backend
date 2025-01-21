@@ -11,24 +11,28 @@ const newUserURL = '/api/auth/signup'
 const loginURL = '/api/auth/login'
 
 const account = {
-    "name": "Anibru Martinez",
+    "name": "Anibru",
+    "surname":"Martinez",
     "email": "daniel2111004@gmail.com",
     "password": "Daniel211004",
     "bio": "Never expect something better, better things always brings sadder moods"
 }
 
 const accountUpdatedFields = {
-    "name": "Daniel Martinez",
+    "name": "Eduardo",
+    "surname":"Ramirez",
     "email": "eduardo2111004@gmail.com",
     "bio": "Just a chill guy"
 }
 const accounts = [{
-    "name": "Anibru Martinez",
+    "name": "Anibru",
+    "surname":"Martinez",
     "email": "eduzz2111004@gmail.com",
     "password": "Daniel211004",
     "bio": "Never expect something better, better things always brings sadder moods"
 }, {
-    "name": "Daniel Martinez",
+    "name": "Daniel",
+    "surname":"Martinez",
     "email": "eduz2111004@gmail.com",
     "password": "edu23423423",
     "bio": "Never expect something better, better things always brings sadder moods"
@@ -85,7 +89,7 @@ describe('Users', () => {
         const response = await api.delete(`${apiURL}/me`).set('Authorization', loggedUserToken).expect(200)
         assert.ok(response.body.message)
     })
-    
+
 })
 
 after(async () => {

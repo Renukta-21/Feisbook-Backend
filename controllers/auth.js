@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 authRouter.post('/signup', async (req, res) => {
-    const { name, email, password, bio } = req.body
+    const { name, surname, email, password, bio } = req.body
     if (!password || password.length < 8) {
         return res.status(400).send({
             error: 'Password length must be at least 8 chars'
@@ -13,7 +13,7 @@ authRouter.post('/signup', async (req, res) => {
     }
 
     const passwordHash = await bcrypt.hash(password, 10)
-    const newUser = new User({ name, email, passwordHash, bio })
+    const newUser = new User({ name, surname, email, passwordHash, bio })
     await newUser.save()
     res.status(201).send(newUser)
 })

@@ -16,6 +16,7 @@ const validationTests = [
     {
         data: {
             "email": "eduz211004@gmail.com",
+            "surname":"Martinez",
             "password": "Daniel211004",
             "bio": "Never expect something better, better things always brings sadder moods"
         },
@@ -23,7 +24,8 @@ const validationTests = [
     },
     {
         data: {
-            "name":"Anibru Martinez",
+            "name":"Anibru",
+            "surname":"Martinez",
             "password": "Daniel211004",
             "bio": "Never expect something better, better things always brings sadder moods"
         },
@@ -52,14 +54,16 @@ describe('Sign up', () => {
     test('Email already exists', async()=>{
         await api.post(apiURL)
         .send({
-            "name":"Eduardo Urbina",
+            "name":"Eduardo",
+            "surname":"Urbina",
             "email": "eduz211004@gmail.com",
             "password": "Daniel211004",
             "bio": "Never expect something better, better things always brings sadder moods"
         })
         const response = await api.post(apiURL)
         .send({
-            "name":"Daniel Urbina",
+            "name":"Daniel",
+            "surname":"Urbina",
             "email": "eduz211004@gmail.com",
             "password": "Daniel211004",
             "bio": "Never expect something better, better things always brings sadder moods"
