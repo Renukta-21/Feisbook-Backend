@@ -34,9 +34,12 @@ const accounts = [{
     "bio": "Never expect something better, better things always brings sadder moods"
 }]
 
-
+let loginResponse, signupResponse, loggedUserToken
 beforeEach(async () => {
     await User.deleteMany({})
+    signupResponse = await api.post(newUserURL).send(account).expect(201)
+    loginResponse = await api.post(loginURL).send(account).expect(200)
+    loggedUserToken = `Bearer ${loginResponse.body.token}`
 })
 
 let id = []
@@ -48,8 +51,6 @@ const insertUsers = async () => {
 }
 describe('Users', () => {
     test('Retrieving logged user', async () => {
-        await api.post(`/api/auth/signup`).send(account).expect(201)
-        const loginResponse = await api.post(`/api/auth/login`).send(account).expect(200)
         const response = await api.get(`${apiURL}/me`).set('Authorization', `Bearer ${loginResponse.body.token}`)
             .expect(200)
         assert.strictEqual(response.body.name, account.name)
@@ -71,9 +72,7 @@ describe('Users', () => {
     })
 
     test('Updating authenticated user', async () => {
-        const signupResponse = await api.post(newUserURL).send(account).expect(201)
-        const loginResponse = await api.post(loginURL).send(account).expect(200)
-        const response = await api.put(`${apiURL}/me`).set('Authorization', `Bearer ${loginResponse.body.token}`).send(accountUpdatedFields).expect(200)
+        const response = await api.put(`${apiURL}/me`).set('Authorization', loggedUserToken).send(accountUpdatedFields).expect(200)
 
         assert.strictEqual(response.body.name, accountUpdatedFields.name, 'Name should be updated');
         assert.strictEqual(response.body.bio, accountUpdatedFields.bio, 'Bio should be updated');
@@ -81,6 +80,12 @@ describe('Users', () => {
         assert.strictEqual(account.email, response.body.email, 'Email should not be updated');
         assert.strictEqual(response.body._id, signupResponse.body._id, 'ID should not change');
     })
+
+    test('Deleting authenticated user ', async () => {
+        const response = await api.delete(`${apiURL}/me`).set('Authorization', loggedUserToken).expect(200)
+        assert.ok(response.body.message)
+    })
+    
 })
 
 after(async () => {
