@@ -70,10 +70,10 @@ describe('Users', () => {
         assert.ok(response.body.error)
     })
 
-    test('Updating specific user', async () => {
+    test('Updating authenticated user', async () => {
         const signupResponse = await api.post(newUserURL).send(account).expect(201)
         const loginResponse = await api.post(loginURL).send(account).expect(200)
-        const response = await api.put(`${apiURL}/${signupResponse.body._id}`).set('Authorization', `Bearer ${loginResponse.body.token}`).send(accountUpdatedFields).expect(200)
+        const response = await api.put(`${apiURL}/me`).set('Authorization', `Bearer ${loginResponse.body.token}`).send(accountUpdatedFields).expect(200)
 
         assert.strictEqual(response.body.name, accountUpdatedFields.name, 'Name should be updated');
         assert.strictEqual(response.body.bio, accountUpdatedFields.bio, 'Bio should be updated');
