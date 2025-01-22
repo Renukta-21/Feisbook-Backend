@@ -3,6 +3,7 @@ Content-Type: application/json
 
 {
     "name":"Eduardo",
+    "surname":"urbina",
     "email":"edu211004@gmail.com",
     "password":"Daniel211004",
     "bio":"Never expect something better, better things always brings sadder moods"

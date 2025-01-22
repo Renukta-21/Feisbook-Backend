@@ -7,4 +7,5 @@ cloudinary.config({
     api_secret: config.api_secret,
     secure:true
 });
+
 export const uploadImage = ()=>{}

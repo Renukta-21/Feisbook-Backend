@@ -28,7 +28,7 @@ const tokenExtractor = async(req,res,next) => {
 
 const errorHandler = (err, req, res, next) => {
     if (process.env.NODE_ENV !== 'tests' && process.env.NODE_ENV !== 'test') {
-        console.log('Error --------------------------------');
+        console.log('Error --------------------------------' +err.message);
     }
     
     if (err.code === 11000) {
