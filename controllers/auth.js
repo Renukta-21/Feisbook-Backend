@@ -18,9 +18,9 @@ authRouter.post('/signup', async (req, res) => {
     const newUser = new User({ name, surname, email, passwordHash, bio })
 
     const response = await uploadImage(req.files.profilePic.tempFilePath)
-    console.log(response)
 
-    newUser.profilePic = response.url
+    console.log(response.url)
+    newUser.profilePicture = response.url
     await newUser.save()
     res.status(201).send(newUser)
 })

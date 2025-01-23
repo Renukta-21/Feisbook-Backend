@@ -20,11 +20,14 @@ const userSchema = new mongoose.Schema({
         required:true,
         type:String
     },
-    profilePicture:{
-        type:String,
-    },
-    coverPhoto:{
-        type:String
+    images:{
+        profile:{
+            url:String,
+            public_id:String,
+        },
+        cover:{
+            url:String,
+            public_id:String
     },
     bio:{
         type:String
