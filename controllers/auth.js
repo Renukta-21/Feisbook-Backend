@@ -1,4 +1,5 @@
 const User = require('../models/user')
+const fs = require('fs/promises');
 const authRouter = require('express').Router()
 require('express-async-errors')
 const bcrypt = require('bcrypt')
@@ -16,7 +17,6 @@ authRouter.post('/signup', async (req, res) => {
     const passwordHash = await bcrypt.hash(password, 10)
     const newUser = new User({ name, surname, email, passwordHash, bio })
 
-    /* console.log(req.files.profilePic.tempFilePath) */
     const response = await uploadImage(req.files.profilePic.tempFilePath)
     console.log(response)
 
