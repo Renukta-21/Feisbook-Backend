@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
         cover:{
             url:String,
             public_id:String
-    },
+    }},
     bio:{
         type:String
     },
