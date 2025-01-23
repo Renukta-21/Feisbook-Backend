@@ -15,10 +15,13 @@ authRouter.post('/signup', async (req, res) => {
 
     const passwordHash = await bcrypt.hash(password, 10)
     const newUser = new User({ name, surname, email, passwordHash, bio })
-    await newUser.save()
 
-    console.log(req.files.profilePic.tempFilePath)
+    /* console.log(req.files.profilePic.tempFilePath) */
     const response = await uploadImage(req.files.profilePic.tempFilePath)
+    console.log(response)
+
+    newUser.profilePic = response.url
+    await newUser.save()
     res.status(201).send(newUser)
 })
 

@@ -9,7 +9,9 @@ cloudinary.config({
 });
 
 const uploadImage = async (filePath)=>{
-    return await cloudinary.uploader.upload(filePath)
+    return await cloudinary.uploader.upload(filePath, {
+        folder:'feisbook-profile'
+    })
 }
 
 module.exports = {uploadImage}
