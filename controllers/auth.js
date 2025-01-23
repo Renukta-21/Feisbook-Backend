@@ -3,9 +3,9 @@ const authRouter = require('express').Router()
 require('express-async-errors')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const {uploadImage} = require('../utils/cloudinary')
 
 authRouter.post('/signup', async (req, res) => {
-    console.log(req.files)
     const { name, surname, email, password, bio } = req.body
     if (!password || password.length < 8) {
         return res.status(400).send({
@@ -16,6 +16,9 @@ authRouter.post('/signup', async (req, res) => {
     const passwordHash = await bcrypt.hash(password, 10)
     const newUser = new User({ name, surname, email, passwordHash, bio })
     await newUser.save()
+
+    console.log(req.files.profilePic.tempFilePath)
+    const response = await uploadImage(req.files.profilePic.tempFilePath)
     res.status(201).send(newUser)
 })
 

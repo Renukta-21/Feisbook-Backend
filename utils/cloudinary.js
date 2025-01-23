@@ -8,4 +8,8 @@ cloudinary.config({
     secure:true
 });
 
-export const uploadImage = ()=>{}
+const uploadImage = async (filePath)=>{
+    return await cloudinary.uploader.upload(filePath)
+}
+
+module.exports = {uploadImage}
