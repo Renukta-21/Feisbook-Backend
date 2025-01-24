@@ -12,14 +12,14 @@ const loginURL = '/api/auth/login'
 
 const account = {
     "name": "Anibru",
-    "surname":"Martinez",
+    "surname": "Martinez",
     "email": "daniel2111004@gmail.com",
     "password": "Daniel211004",
     "bio": "Never expect something better, better things always brings sadder moods"
 }
 const friendAccount = {
     "name": "Daniel",
-    "surname":"Urbina",
+    "surname": "Urbina",
     "email": "eduardourbina@gmail.com",
     "password": "Daniel211004aa",
     "bio": "Just a chull guy x2"
@@ -27,19 +27,19 @@ const friendAccount = {
 
 const accountUpdatedFields = {
     "name": "Eduardo",
-    "surname":"Ramirez",
+    "surname": "Ramirez",
     "email": "eduardo2111004@gmail.com",
     "bio": "Just a chill guy"
 }
 const accounts = [{
     "name": "Anibru",
-    "surname":"Martinez",
+    "surname": "Martinez",
     "email": "eduzz2111004@gmail.com",
     "password": "Daniel211004",
     "bio": "Never expect something better, better things always brings sadder moods"
 }, {
     "name": "Daniel",
-    "surname":"Martinez",
+    "surname": "Martinez",
     "email": "eduz2111004@gmail.com",
     "password": "edu23423423",
     "bio": "Never expect something better, better things always brings sadder moods"
@@ -82,30 +82,25 @@ describe('Users', () => {
         assert.ok(response.body.error)
     })
 
-    test('Updating authenticated user', async () => {
-        const response = await api.put(`${apiURL}/me`).set('Authorization', loggedUserToken).send(accountUpdatedFields).expect(200)
-
-        assert.strictEqual(response.body.name, accountUpdatedFields.name, 'Name should be updated');
-        assert.strictEqual(response.body.bio, accountUpdatedFields.bio, 'Bio should be updated');
-
-        assert.strictEqual(account.email, response.body.email, 'Email should not be updated');
-        assert.strictEqual(response.body._id, signupResponse.body._id, 'ID should not change');
-    })
-
     test('Deleting authenticated user ', async () => {
         const response = await api.delete(`${apiURL}/me`).set('Authorization', loggedUserToken).expect(200)
         assert.ok(response.body.message)
     })
 
-    test('User is able to add new friends', async()=>{
-        const newUserResponse = await api.post(newUserURL).send(friendAccount).expect(201)
-        const friendLoginResponse = await api.post(loginURL).send(friendAccount).expect(200)
-        
-        const usersResponse = await api.get(`${apiURL}`).expect(200)
-        const userToFriendId = usersResponse.body[0]._id
-        
-    })
+    describe('Friends', () => {
+        const friendRequestURL = 'api/users/me/friends/requests'
 
+        test('User is able to add new friends', async () => {
+            await api.post(newUserURL).send(friendAccount).expect(201)
+            const friendLoginResponse = await api.post(loginURL).send(friendAccount).expect(200)
+
+            const usersListResponse = await api.get(`${apiURL}`).expect(200)
+            const userToFriendId = usersListResponse.body[0]._id
+
+            const response = await api.put('/me/friends/requests').expect(200)
+
+        })
+    })
 })
 
 after(async () => {

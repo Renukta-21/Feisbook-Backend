@@ -4,43 +4,45 @@ const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        trim:true
+        trim: true
     },
-    surname:{
-        required:true,
-        trim:true,
-        type:String
+    surname: {
+        required: true,
+        trim: true,
+        type: String
     },
-     email:{
-        type:String,
-        required:true,
-        unique:true
+    email: {
+        type: String,
+        required: true,
+        unique: true
     },
-    passwordHash:{
-        required:true,
-        type:String
+    passwordHash: {
+        required: true,
+        type: String
     },
-    images:{
-        profile:{
-            url:String,
-            public_id:String,
+    images: {
+        profile: {
+            url: String,
+            public_id: String,
         },
-        cover:{
-            url:String,
-            public_id:String
-    }},
-    bio:{
-        type:String
+        cover: {
+            url: String,
+            public_id: String
+        }
     },
-    friends:[{
+    bio: {
+        type: String
+    },
+    friends: [{
         type: mongoose.Types.ObjectId,
-        ref:'User'
+        ref: 'User'
     }],
-    friendsRequests:[{
-        type:mongoose.Types.ObjectId,
-        ref:'User'
+    friendRequests: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'User'
     }]
-})
+});
+
 userSchema.set('toJSON', {
     transform: (doc, ret) => {
         delete ret.passwordHash;
@@ -49,9 +51,8 @@ userSchema.set('toJSON', {
     }
 });
 
+// Evita la redefinición del modelo
 
-const User = mongoose.model('User', userSchema)
+const User =  mongoose.model('User', userSchema);
 
-
-
-module.exports = User
+module.exports = User;

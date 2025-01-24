@@ -1,10 +1,10 @@
-const User = require('../models/user')
 const fs = require('fs/promises');
 const authRouter = require('express').Router()
 require('express-async-errors')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { uploadImage } = require('../utils/cloudinary')
+const User = require('../models/user')
 
 authRouter.post('/signup', async (req, res) => {
     const { name, surname, email, password, bio } = req.body

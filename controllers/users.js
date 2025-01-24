@@ -2,10 +2,6 @@ const usersRouter = require('express').Router()
 const middleware = require('../utils/middleware')
 const User = require('../models/user')
 
-usersRouter.get('/me', middleware.tokenExtractor, async (req, res) => {
-    const user = req.user
-    res.status(200).send(user)
-})
 usersRouter.get('/',  async (req, res) => {
     const user = req.user
     const userList = await User.find({})
@@ -21,42 +17,4 @@ usersRouter.get('/:id', async (req, res) => {
     res.status(200).send(user)
 })
 
-usersRouter.put('/me', middleware.tokenExtractor, async (req, res) => {
-    const user = req.user
-    const { email, ...allowedUpdates } = req.body
-    const updatedUser = await User.findByIdAndUpdate(user._id, allowedUpdates, {
-        new: true,
-        runValidators: true
-    })
-
-    res.status(200).send(updatedUser)
-})
-usersRouter.put('/me/friends/requests', middleware.tokenExtractor, async (req, res) => {
-    const user = req.user
-    const {friendId} = req.body
-
-    if(!friendId){
-        return res.status(400).send({error:"Friend Id is required"})
-    }
-
-    if(user.friends.includes(friendId)){
-        return res.status(409).send({error:"users already friends"})
-    }
-    
-    const updatedUser = await User.findByIdAndUpdate(user._id, allowedUpdates, {
-        new: true,
-        runValidators: true
-    })
-
-    res.status(200).send(updatedUser)
-})
-
-usersRouter.delete('/me', middleware.tokenExtractor, async (req, res) => {
-    const user = req.user
-    await User.findByIdAndDelete(user._id)
-
-    res.status(200).send({
-        "message": "User successfully deleted"
-    })
-})
 module.exports = usersRouter

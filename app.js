@@ -6,6 +6,7 @@ const { default: mongoose } = require('mongoose')
 const config = require('./config')
 const middleware = require('./utils/middleware')
 const docRouter = require('./controllers/docs')
+const meRouter = require('./controllers/me')
 const fileUpload = require('express-fileupload');
 
 const app = express()
@@ -18,9 +19,11 @@ app.use(fileUpload({
     useTempFiles: true, 
     tempFileDir: './uploads/',
 }));
+
 app.use(cors())
 app.use(express.json())
 app.use('/api/', docRouter)
+app.use('/api/me/', middleware.tokenExtractor,meRouter)
 app.use('/api/auth/', authRouter)
 app.use('/api/users/', userRouter)
 app.use(middleware.errorHandler)
