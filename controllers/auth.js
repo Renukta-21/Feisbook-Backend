@@ -4,42 +4,50 @@ const authRouter = require('express').Router()
 require('express-async-errors')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {uploadImage} = require('../utils/cloudinary')
+const { uploadImage } = require('../utils/cloudinary')
 
 authRouter.post('/signup', async (req, res) => {
     const { name, surname, email, password, bio } = req.body
     if (!password || password.length < 8) {
         return res.status(400).send({
             error: 'Password length must be at least 8 chars '
-        }) 
+        })
     }
 
     const passwordHash = await bcrypt.hash(password, 10)
     const newUser = new User({ name, surname, email, passwordHash, bio })
 
-    const response = await uploadImage(req.files.profilePic.tempFilePath)
+    /* console.log(req.files) */
+    if (req.files) {
+        const response = await uploadImage(req.files.image.tempFilePath)
+        console.log(response)
+        newUser.images.profile = {
+            url: response.url,
+            public_id: response.public_id
+        }
 
-    console.log(response.url)
-    newUser.profilePicture = response.url
+        await fs.unlink(req.files.image.tempFilePath)
+    }
+
     await newUser.save()
     res.status(201).send(newUser)
 })
 
-authRouter.post('/login', async(req,res) => {
+authRouter.post('/login', async (req, res) => {
     const { password, name, email } = req.body
 
     if (!email || !password) {
-        return res.status(400).send({ error: 'Email or password not provided' }) 
+        return res.status(400).send({ error: 'Email or password not provided' })
     }
 
     const user = await User.findOne({ email })
     if (!user) {
-        return res.status(404).send({ error: 'User not found' }) 
+        return res.status(404).send({ error: 'User not found' })
     }
 
-    const validPassword = await bcrypt.compare(password, user.passwordHash) 
+    const validPassword = await bcrypt.compare(password, user.passwordHash)
     if (!validPassword) {
-        return res.status(401).send({ error: 'Incorrect password' }) 
+        return res.status(401).send({ error: 'Incorrect password' })
     }
 
     const token = jwt.sign({
