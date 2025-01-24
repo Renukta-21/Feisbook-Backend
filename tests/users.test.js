@@ -17,6 +17,13 @@ const account = {
     "password": "Daniel211004",
     "bio": "Never expect something better, better things always brings sadder moods"
 }
+const FriendAccount = {
+    "name": "Daniel",
+    "surname":"Urbina",
+    "email": "eduardourbina@gmail.com",
+    "password": "Daniel211004aa",
+    "bio": "Just a chull guy x2"
+}
 
 const accountUpdatedFields = {
     "name": "Eduardo",
@@ -88,6 +95,10 @@ describe('Users', () => {
     test('Deleting authenticated user ', async () => {
         const response = await api.delete(`${apiURL}/me`).set('Authorization', loggedUserToken).expect(200)
         assert.ok(response.body.message)
+    })
+
+    test('User is able to add new friends', async()=>{
+        const newUserResponse = await api.post(newUserURL).send()
     })
 
 })
