@@ -6,6 +6,13 @@ usersRouter.get('/me', middleware.tokenExtractor, async (req, res) => {
     const user = req.user
     res.status(200).send(user)
 })
+usersRouter.get('/',  async (req, res) => {
+    const user = req.user
+    const userList = await User.find({})
+
+    res.status(200).send(userList)
+})
+
 usersRouter.get('/:id', async (req, res) => {
     const { id } = req.params
     const user = await User.findById(id)

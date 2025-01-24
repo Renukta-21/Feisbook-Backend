@@ -17,7 +17,7 @@ const account = {
     "password": "Daniel211004",
     "bio": "Never expect something better, better things always brings sadder moods"
 }
-const FriendAccount = {
+const friendAccount = {
     "name": "Daniel",
     "surname":"Urbina",
     "email": "eduardourbina@gmail.com",
@@ -98,7 +98,12 @@ describe('Users', () => {
     })
 
     test('User is able to add new friends', async()=>{
-        const newUserResponse = await api.post(newUserURL).send()
+        const newUserResponse = await api.post(newUserURL).send(friendAccount).expect(201)
+        const friendLoginResponse = await api.post(loginURL).send(friendAccount).expect(200)
+        
+        const usersResponse = await api.get(`${apiURL}`).expect(200)
+        const userToFriendId = usersResponse.body[0]._id
+        
     })
 
 })
