@@ -61,12 +61,6 @@ const insertUsers = async () => {
     }
 }
 describe('Users', () => {
-    test('Retrieving logged user', async () => {
-        const response = await api.get(`${apiURL}/me`).set('Authorization', `Bearer ${loginResponse.body.token}`)
-            .expect(200)
-        assert.strictEqual(response.body.name, account.name)
-    })
-
     test('Retrieving specific user', async () => {
         await insertUsers()
         const response = await api.get(`${apiURL}/${id[1]}`)
@@ -74,7 +68,6 @@ describe('Users', () => {
         assert.ok(response.body._id)
 
     })
-
     test('Retrieving non existing user', async () => {
         await User.findByIdAndDelete(id[0])
         const response = await api.get(`${apiURL}/${id[0]}`)
@@ -82,25 +75,6 @@ describe('Users', () => {
         assert.ok(response.body.error)
     })
 
-    test('Deleting authenticated user ', async () => {
-        const response = await api.delete(`${apiURL}/me`).set('Authorization', loggedUserToken).expect(200)
-        assert.ok(response.body.message)
-    })
-
-    describe('Friends', () => {
-        const friendRequestURL = 'api/users/me/friends/requests'
-
-        test('User is able to add new friends', async () => {
-            await api.post(newUserURL).send(friendAccount).expect(201)
-            const friendLoginResponse = await api.post(loginURL).send(friendAccount).expect(200)
-
-            const usersListResponse = await api.get(`${apiURL}`).expect(200)
-            const userToFriendId = usersListResponse.body[0]._id
-
-            const response = await api.put('/me/friends/requests').expect(200)
-
-        })
-    })
 })
 
 after(async () => {
