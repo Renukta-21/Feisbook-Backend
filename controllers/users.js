@@ -31,9 +31,18 @@ usersRouter.put('/me', middleware.tokenExtractor, async (req, res) => {
 
     res.status(200).send(updatedUser)
 })
-usersRouter.put('/me/friends', middleware.tokenExtractor, async (req, res) => {
+usersRouter.put('/me/friends/requests', middleware.tokenExtractor, async (req, res) => {
     const user = req.user
-    const {friend}
+    const {friendId} = req.body
+
+    if(!friendId){
+        return res.status(400).send({error:"Friend Id is required"})
+    }
+
+    if(user.friends.includes(friendId)){
+        return res.status(409).send({error:"users already friends"})
+    }
+    
     const updatedUser = await User.findByIdAndUpdate(user._id, allowedUpdates, {
         new: true,
         runValidators: true
