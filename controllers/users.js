@@ -31,6 +31,16 @@ usersRouter.put('/me', middleware.tokenExtractor, async (req, res) => {
 
     res.status(200).send(updatedUser)
 })
+usersRouter.put('/me/friends', middleware.tokenExtractor, async (req, res) => {
+    const user = req.user
+    const {friend}
+    const updatedUser = await User.findByIdAndUpdate(user._id, allowedUpdates, {
+        new: true,
+        runValidators: true
+    })
+
+    res.status(200).send(updatedUser)
+})
 
 usersRouter.delete('/me', middleware.tokenExtractor, async (req, res) => {
     const user = req.user
