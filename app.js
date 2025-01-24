@@ -22,10 +22,10 @@ app.use(fileUpload({
 
 app.use(cors())
 app.use(express.json())
-app.use('/api/', docRouter)
-app.use('/api/me/', middleware.tokenExtractor,meRouter)
-app.use('/api/auth/', authRouter)
-app.use('/api/users/', userRouter)
+app.use('/api', docRouter)
+app.use('/api/me', middleware.tokenExtractor,meRouter)
+app.use('/api/auth', authRouter)
+app.use('/api/users', userRouter)
 app.use(middleware.errorHandler)
 
 module.exports = app

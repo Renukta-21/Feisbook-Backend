@@ -25,12 +25,6 @@ const friendAccount = {
     "bio": "Just a chull guy x2"
 }
 
-const accountUpdatedFields = {
-    "name": "Eduardo",
-    "surname": "Ramirez",
-    "email": "eduardo2111004@gmail.com",
-    "bio": "Just a chill guy"
-}
 const accounts = [{
     "name": "Anibru",
     "surname": "Martinez",

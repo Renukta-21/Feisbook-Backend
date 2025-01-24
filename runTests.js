@@ -3,6 +3,7 @@ async function runTests() {
       await require('./tests/login.test');
       await require('./tests/signup.test');
       await require('./tests/users.test');
+      await require('./tests/me.test')
       console.log('Todas las pruebas se ejecutaron correctamente.');
     } catch (err) {
       console.error('Error en las pruebas:', err);
