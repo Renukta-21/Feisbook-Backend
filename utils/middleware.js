@@ -42,7 +42,7 @@ const errorHandler = (err, req, res, next) => {
         res.status(400).send({error:'Invalid ID format'})
     }
     else {
-        console.log('Nuevo errror ' + err)
+        console.log('Nuevo errror ' + err.message)
     }
 
 }

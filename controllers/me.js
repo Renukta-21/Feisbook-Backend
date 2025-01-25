@@ -11,8 +11,9 @@ meRouter.delete('/', async (req, res) => {
     const user = req.user
     await User.findByIdAndDelete(user._id)
 
-    const response = await deleteImage(user.images.profile.public_id)
-    console.log(response)
+    if(user.images.profile.public_id){
+        await deleteImage(user.images.profile.public_id)
+    }
 
     res.status(200).send({
         "message": "User successfully deleted"
