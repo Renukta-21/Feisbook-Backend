@@ -1,4 +1,5 @@
 const User = require('../models/user')
+const { deleteImage } = require('../utils/cloudinary')
 const meRouter = require('express').Router()
 
 meRouter.get('/', async (req, res) => {
@@ -9,6 +10,9 @@ meRouter.get('/', async (req, res) => {
 meRouter.delete('/', async (req, res) => {
     const user = req.user
     await User.findByIdAndDelete(user._id)
+
+    const response = await deleteImage(user.images.profile.public_id)
+    console.log(response)
 
     res.status(200).send({
         "message": "User successfully deleted"
