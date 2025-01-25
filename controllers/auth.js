@@ -17,7 +17,6 @@ authRouter.post('/signup', async (req, res) => {
     const passwordHash = await bcrypt.hash(password, 10)
     const newUser = new User({ name, surname, email, passwordHash, bio })
 
-    /* console.log(req.files) */
     if (req.files) {
         const response = await uploadImage(req.files.image.tempFilePath)
         console.log(response)
